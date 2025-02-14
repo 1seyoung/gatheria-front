@@ -34,7 +34,7 @@ export default function Dashboard() {
     }
 
     // ✅ 역할에 따라 올바른 대시보드로 이동
-    return user.role === "instructor" ? (
+    return user.role === "INSTRUCTOR" ? (
         <InstructorDashboard user={user} />
     ) : (
         <StudentDashboard user={user} />
