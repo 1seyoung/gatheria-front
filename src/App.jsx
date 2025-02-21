@@ -6,9 +6,10 @@ import LoginPage from "./pages/LoginPage.jsx";
 import Dashboard from "./pages/Dashboard";
 import StudentDashboard from "./pages/components/StudentDashboard.jsx";
 import InstructorDashboard from "./pages/components/InstructorDashboard.jsx";
+import LectureDashboard from "./pages/components/LectureDashboard.jsx";
 
 import "./App.css";
-
+import JoinLecture from "./pages/components/JoinLecture.jsx";
 
 function App() {
     return (
@@ -21,6 +22,8 @@ function App() {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/dashboard/student" element={<StudentDashboard />} />
                 <Route path="/dashboard/instructor" element={<InstructorDashboard />} />
+                <Route path="/dashboard/:identifier" element={<LectureDashboard />} />
+                <Route path="/join/:code" element={<JoinLecture />} /> {/* 추가 */}
             </Routes>
         </Router>
     );
