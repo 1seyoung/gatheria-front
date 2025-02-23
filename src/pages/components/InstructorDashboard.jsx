@@ -39,7 +39,7 @@ export default function InstructorDashboard({ user }) {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem("accessToken")}`
                 },
-                body: JSON.stringify({ name: lectureName }) // DTO 수정하지 않았으므로 기존의 name 필드 유지
+                body: JSON.stringify({ name: lectureName })
             });
 
             if (response.ok) {
@@ -57,7 +57,7 @@ export default function InstructorDashboard({ user }) {
     const LectureCard = ({ lecture }) => (
         <div
             className="bg-white rounded-lg shadow p-6 cursor-pointer hover:shadow-lg transition-shadow"
-            onClick={() => navigate(`/dashboard/${lecture.code}-${lecture.id}`)}
+            onClick={() => navigate(`/dashboard/${lecture.id}?code=${lecture.code}`)}
         >
             <div className="flex justify-between items-start mb-4">
                 <h3 className="text-xl font-semibold">{lecture.name}</h3>
@@ -65,7 +65,6 @@ export default function InstructorDashboard({ user }) {
                     className="text-gray-500"
                     onClick={(e) => {
                         e.stopPropagation();
-                        // 추후 메뉴 구현
                     }}
                 >
                     ⋮
@@ -76,7 +75,7 @@ export default function InstructorDashboard({ user }) {
                     className="text-gray-600 hover:text-gray-900"
                     onClick={(e) => {
                         e.stopPropagation();
-                        navigate(`/dashboard/${lecture.code}-${lecture.id}?tab=announcements`);
+                        navigate(`/dashboard/${lecture.id}?code=${lecture.code}&tab=announcements`);
                     }}
                 >
                     📑
@@ -85,7 +84,7 @@ export default function InstructorDashboard({ user }) {
                     className="text-gray-600 hover:text-gray-900"
                     onClick={(e) => {
                         e.stopPropagation();
-                        navigate(`/dashboard/${lecture.code}-${lecture.id}?tab=grades`);
+                        navigate(`/dashboard/${lecture.id}?code=${lecture.code}&tab=grades`);
                     }}
                 >
                     📊
@@ -96,7 +95,6 @@ export default function InstructorDashboard({ user }) {
 
     return (
         <div className="flex min-h-screen bg-gray-100">
-            {/* Sidebar */}
             <div className="w-64 bg-white shadow-lg">
                 <div className="p-4">
                     <h1 className="text-xl font-bold text-left">Gatheria</h1>
@@ -109,25 +107,16 @@ export default function InstructorDashboard({ user }) {
                                 <div
                                     key={lecture.id}
                                     className="px-3 py-2 text-sm hover:bg-gray-100 rounded cursor-pointer border-l-4 border-transparent hover:border-blue-500"
-                                    onClick={() => navigate(`/dashboard/${lecture.code}-${lecture.id}`)}
+                                    onClick={() => navigate(`/dashboard/${lecture.id}?code=${lecture.code}`)}
                                 >
                                     {lecture.name}
                                 </div>
                             ))}
                         </div>
                     </div>
-                    <div className="px-4 py-2 mt-4">
-                        <button className="flex items-center space-x-2 text-sm text-gray-600 hover:text-gray-900">
-                            📦 <span>보관처리된 수업</span>
-                        </button>
-                        <button className="flex items-center space-x-2 text-sm text-gray-600 hover:text-gray-900 mt-2">
-                            ⚙️ <span>설정</span>
-                        </button>
-                    </div>
                 </nav>
             </div>
 
-            {/* Main content */}
             <div className="flex-1">
                 <header className="bg-white shadow">
                     <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
@@ -162,61 +151,6 @@ export default function InstructorDashboard({ user }) {
                     </section>
                 </main>
             </div>
-
-            {/* Create Lecture Modal */}
-            {isCreateModalOpen && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                    <div className="bg-white rounded-lg p-6 w-96">
-                        <h3 className="text-xl font-bold mb-4">새 수업 만들기</h3>
-                        <input
-                            type="text"
-                            placeholder="수업 이름을 입력하세요"
-                            className="w-full p-2 border rounded mb-4"
-                            value={lectureName}
-                            onChange={(e) => setLectureName(e.target.value)}
-                        />
-                        <div className="flex justify-end space-x-2">
-                            <button
-                                className="px-4 py-2 text-gray-600 hover:text-gray-900"
-                                onClick={() => {
-                                    setIsCreateModalOpen(false);
-                                    setLectureName("");
-                                }}
-                            >
-                                취소
-                            </button>
-                            <button
-                                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                                onClick={handleCreateLecture}
-                            >
-                                생성
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* User Info Modal */}
-            {isUserModalOpen && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                    <div className="bg-white rounded-lg p-6 w-96">
-                        <h3 className="text-xl font-bold mb-4">사용자 정보</h3>
-                        <div className="space-y-2">
-                            <p><strong>이름:</strong> {user.name}</p>
-                            <p><strong>소속:</strong> {user.affiliation}</p>
-                            <p><strong>이메일:</strong> {user.email}</p>
-                        </div>
-                        <div className="flex justify-end mt-4">
-                            <button
-                                className="px-4 py-2 text-gray-600 hover:text-gray-900"
-                                onClick={() => setIsUserModalOpen(false)}
-                            >
-                                닫기
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 }
